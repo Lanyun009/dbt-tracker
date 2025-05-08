@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Meditation, Music, Activity } from 'lucide-react';
+import { Sunset, Music, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const MindfulPractice = () => {
@@ -9,7 +9,7 @@ const MindfulPractice = () => {
       id: 1,
       name: 'Guided Meditation',
       duration: '10 min',
-      icon: <Meditation className="text-primary" size={18} />,
+      icon: <Sunset className="text-primary" size={18} />,
     },
     {
       id: 2,

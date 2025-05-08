@@ -5,10 +5,10 @@ import {
   Calendar, 
   Heart, 
   Home, 
-  Meditation, 
   Brain, 
   User, 
-  FileText 
+  FileText,
+  Sunset // Using Sunset instead of Meditation
 } from 'lucide-react';
 import {
   Sidebar,
@@ -42,7 +42,7 @@ const menuItems = [
   {
     title: "Mindfulness",
     path: "/mindfulness",
-    icon: Meditation,
+    icon: Sunset, // Using Sunset instead of Meditation
   },
   {
     title: "Therapy",
@@ -86,7 +86,7 @@ export function AppSidebar() {
                 const isActive = location.pathname === item.path;
                 return (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild active={isActive}>
+                    <SidebarMenuButton asChild isActive={isActive}>
                       <Link to={item.path} className="flex items-center gap-3">
                         <item.icon size={20} />
                         <span>{item.title}</span>

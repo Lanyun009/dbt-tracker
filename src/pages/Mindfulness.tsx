@@ -3,7 +3,7 @@ import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Meditation, Music, Activity, FileText, Heart } from 'lucide-react';
+import { Sunset, Music, Activity, FileText, Heart } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const recommendedPractices = [
@@ -13,7 +13,7 @@ const recommendedPractices = [
     category: 'Meditation',
     duration: '15 min',
     description: 'A guided practice to develop awareness of your body and release tension.',
-    icon: <Meditation size={24} />,
+    icon: <Sunset size={24} />,
     effectiveness: 'High'
   },
   {
