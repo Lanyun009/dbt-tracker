@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -53,7 +54,14 @@ const moodOptions = {
     { value: 'strong', label: 'Strong' },
     { value: 'alert', label: 'Alert' },
   ],
-  neutral: [],
+  neutral: [
+    { value: 'curious', label: 'Curious' },
+    { value: 'interested', label: 'Interested' },
+    { value: 'thoughtful', label: 'Thoughtful' },
+    { value: 'reflective', label: 'Reflective' },
+    { value: 'hopeful', label: 'Hopeful' },
+    { value: 'motivated', label: 'Motivated' },
+  ],
   negative: [
     { value: 'sad', label: 'Sad' },
     { value: 'tired', label: 'Tired' },
@@ -167,16 +175,19 @@ const NewJournalEntry = ({ onClose }: { onClose: () => void }) => {
                               </SelectItem>
                             ))}
                             
-                            {moodOptions.negative.length > 0 && (
-                              <>
-                                <div className="p-2 font-semibold text-destructive">Negative</div>
-                                {moodOptions.negative.map((option) => (
-                                  <SelectItem key={option.value} value={option.value}>
-                                    {option.label}
-                                  </SelectItem>
-                                ))}
-                              </>
-                            )}
+                            <div className="p-2 font-semibold text-muted-foreground mt-2">Neutral</div>
+                            {moodOptions.neutral.map((option) => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                            
+                            <div className="p-2 font-semibold text-destructive mt-2">Negative</div>
+                            {moodOptions.negative.map((option) => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                       </FormItem>
@@ -319,16 +330,19 @@ const NewJournalEntry = ({ onClose }: { onClose: () => void }) => {
                               </SelectItem>
                             ))}
                             
-                            {moodOptions.negative.length > 0 && (
-                              <>
-                                <div className="p-2 font-semibold text-destructive">Negative</div>
-                                {moodOptions.negative.map((option) => (
-                                  <SelectItem key={option.value} value={option.value}>
-                                    {option.label}
-                                  </SelectItem>
-                                ))}
-                              </>
-                            )}
+                            <div className="p-2 font-semibold text-muted-foreground mt-2">Neutral</div>
+                            {moodOptions.neutral.map((option) => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                            
+                            <div className="p-2 font-semibold text-destructive mt-2">Negative</div>
+                            {moodOptions.negative.map((option) => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                       </FormItem>
