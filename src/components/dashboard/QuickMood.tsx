@@ -6,9 +6,9 @@ import { Heart } from 'lucide-react';
 import { toast } from 'sonner';
 
 const moodOptions = [
-  { label: 'Great', value: 'great', category: 'positive' },
-  { label: 'Good', value: 'good', category: 'positive' },
-  { label: 'Okay', value: 'okay', category: 'neutral' },
+  { label: 'Calm', value: 'calm', category: 'positive' },
+  { label: 'Motivated', value: 'motivated', category: 'positive' },
+  { label: 'Content', value: 'content', category: 'positive' },
   { label: 'Meh', value: 'meh', category: 'neutral' },
   { label: 'Low', value: 'low', category: 'negative' },
   { label: 'Awful', value: 'awful', category: 'negative' },
