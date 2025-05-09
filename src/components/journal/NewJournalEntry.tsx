@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -42,60 +41,30 @@ type JournalEntryForm = {
 
 const moodOptions = {
   positive: [
-    { value: 'active', label: 'Active' },
-    { value: 'energetic', label: 'Energetic' },
-    { value: 'enthusiastic', label: 'Enthusiastic' },
-    { value: 'excited', label: 'Excited' },
-    { value: 'joyful', label: 'Joyful' },
-    { value: 'cheerful', label: 'Cheerful' },
-    { value: 'delighted', label: 'Delighted' },
-    { value: 'content', label: 'Content' },
-    { value: 'calm', label: 'Calm' },
-    { value: 'relaxed', label: 'Relaxed' },
+    { value: 'lively', label: 'Lively' },
+    { value: 'happy', label: 'Happy' },
+    { value: 'peppy', label: 'Peppy' },
     { value: 'loving', label: 'Loving' },
     { value: 'caring', label: 'Caring' },
+    { value: 'calm', label: 'Calm' },
     { value: 'proud', label: 'Proud' },
     { value: 'confident', label: 'Confident' },
-    { value: 'inspired', label: 'Inspired' },
+    { value: 'enthusiastic', label: 'Enthusiastic' },
     { value: 'strong', label: 'Strong' },
-    { value: 'attentive', label: 'Attentive' },
     { value: 'alert', label: 'Alert' },
   ],
-  neutral: [
-    { value: 'curious', label: 'Curious' },
-    { value: 'interested', label: 'Interested' },
-    { value: 'thoughtful', label: 'Thoughtful' },
-    { value: 'reflective', label: 'Reflective' },
-    { value: 'hopeful', label: 'Hopeful' },
-    { value: 'motivated', label: 'Motivated' },
-  ],
+  neutral: [],
   negative: [
+    { value: 'sad', label: 'Sad' },
+    { value: 'tired', label: 'Tired' },
+    { value: 'nervous', label: 'Nervous' },
+    { value: 'jittery', label: 'Jittery' },
+    { value: 'grouchy', label: 'Grouchy' },
     { value: 'fed-up', label: 'Fed Up' },
     { value: 'gloomy', label: 'Gloomy' },
-    { value: 'sad', label: 'Sad' },
-    { value: 'downhearted', label: 'Downhearted' },
-    { value: 'blue', label: 'Blue' },
-    { value: 'lonely', label: 'Lonely' },
-    { value: 'disappointed', label: 'Disappointed' },
-    { value: 'tired', label: 'Tired' },
-    { value: 'drowsy', label: 'Drowsy' },
-    { value: 'sleepy', label: 'Sleepy' },
-    { value: 'jittery', label: 'Jittery' },
-    { value: 'nervous', label: 'Nervous' },
-    { value: 'anxious', label: 'Anxious' },
-    { value: 'worried', label: 'Worried' },
-    { value: 'fearful', label: 'Fearful' },
-    { value: 'panicked', label: 'Panicked' },
-    { value: 'irritable', label: 'Irritable' },
-    { value: 'grouchy', label: 'Grouchy' },
-    { value: 'angry', label: 'Angry' },
-    { value: 'hostile', label: 'Hostile' },
-    { value: 'resentful', label: 'Resentful' },
     { value: 'ashamed', label: 'Ashamed' },
-    { value: 'guilty', label: 'Guilty' },
-    { value: 'embarrassed', label: 'Embarrassed' },
+    { value: 'hostile', label: 'Hostile' },
     { value: 'distressed', label: 'Distressed' },
-    { value: 'upset', label: 'Upset' },
   ],
 };
 
@@ -110,10 +79,10 @@ const NewJournalEntry = ({ onClose }: { onClose: () => void }) => {
 
   const form = useForm<JournalEntryForm>({
     defaultValues: {
-      morningMood: 'content',
+      morningMood: 'happy',
       dailyGoal: '',
       todos: todos,
-      eveningMood: 'content',
+      eveningMood: 'happy',
       reflection: '',
       medications: {
         morning: false,
@@ -198,19 +167,16 @@ const NewJournalEntry = ({ onClose }: { onClose: () => void }) => {
                               </SelectItem>
                             ))}
                             
-                            <div className="p-2 font-semibold text-muted-foreground">Neutral</div>
-                            {moodOptions.neutral.map((option) => (
-                              <SelectItem key={option.value} value={option.value}>
-                                {option.label}
-                              </SelectItem>
-                            ))}
-                            
-                            <div className="p-2 font-semibold text-destructive">Negative</div>
-                            {moodOptions.negative.map((option) => (
-                              <SelectItem key={option.value} value={option.value}>
-                                {option.label}
-                              </SelectItem>
-                            ))}
+                            {moodOptions.negative.length > 0 && (
+                              <>
+                                <div className="p-2 font-semibold text-destructive">Negative</div>
+                                {moodOptions.negative.map((option) => (
+                                  <SelectItem key={option.value} value={option.value}>
+                                    {option.label}
+                                  </SelectItem>
+                                ))}
+                              </>
+                            )}
                           </SelectContent>
                         </Select>
                       </FormItem>
@@ -353,19 +319,16 @@ const NewJournalEntry = ({ onClose }: { onClose: () => void }) => {
                               </SelectItem>
                             ))}
                             
-                            <div className="p-2 font-semibold text-muted-foreground">Neutral</div>
-                            {moodOptions.neutral.map((option) => (
-                              <SelectItem key={option.value} value={option.value}>
-                                {option.label}
-                              </SelectItem>
-                            ))}
-                            
-                            <div className="p-2 font-semibold text-destructive">Negative</div>
-                            {moodOptions.negative.map((option) => (
-                              <SelectItem key={option.value} value={option.value}>
-                                {option.label}
-                              </SelectItem>
-                            ))}
+                            {moodOptions.negative.length > 0 && (
+                              <>
+                                <div className="p-2 font-semibold text-destructive">Negative</div>
+                                {moodOptions.negative.map((option) => (
+                                  <SelectItem key={option.value} value={option.value}>
+                                    {option.label}
+                                  </SelectItem>
+                                ))}
+                              </>
+                            )}
                           </SelectContent>
                         </Select>
                       </FormItem>
