@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -89,7 +88,7 @@ const ChainAnalysis = ({ triggerId, triggerName, onClose }: ChainAnalysisProps) 
         return (
           <>
             <CardTitle className="flex items-center gap-2 mb-4">
-              <Problem size={20} className="text-primary" />
+              <Brain size={20} className="text-primary" />
               Problem Behavior
             </CardTitle>
             <CardDescription className="mb-4">
