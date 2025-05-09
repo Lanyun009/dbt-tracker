@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -9,6 +10,13 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from 'sonner';
 import { BookText, Check, BookOpen, Pill, ArrowRight } from 'lucide-react';
 
@@ -32,13 +40,64 @@ type JournalEntryForm = {
   };
 };
 
-const moodOptions = [
-  { value: '1', label: 'Very Bad' },
-  { value: '2', label: 'Bad' },
-  { value: '3', label: 'Neutral' },
-  { value: '4', label: 'Good' },
-  { value: '5', label: 'Very Good' },
-];
+const moodOptions = {
+  positive: [
+    { value: 'active', label: 'Active' },
+    { value: 'energetic', label: 'Energetic' },
+    { value: 'enthusiastic', label: 'Enthusiastic' },
+    { value: 'excited', label: 'Excited' },
+    { value: 'joyful', label: 'Joyful' },
+    { value: 'cheerful', label: 'Cheerful' },
+    { value: 'delighted', label: 'Delighted' },
+    { value: 'content', label: 'Content' },
+    { value: 'calm', label: 'Calm' },
+    { value: 'relaxed', label: 'Relaxed' },
+    { value: 'loving', label: 'Loving' },
+    { value: 'caring', label: 'Caring' },
+    { value: 'proud', label: 'Proud' },
+    { value: 'confident', label: 'Confident' },
+    { value: 'inspired', label: 'Inspired' },
+    { value: 'strong', label: 'Strong' },
+    { value: 'attentive', label: 'Attentive' },
+    { value: 'alert', label: 'Alert' },
+  ],
+  neutral: [
+    { value: 'curious', label: 'Curious' },
+    { value: 'interested', label: 'Interested' },
+    { value: 'thoughtful', label: 'Thoughtful' },
+    { value: 'reflective', label: 'Reflective' },
+    { value: 'hopeful', label: 'Hopeful' },
+    { value: 'motivated', label: 'Motivated' },
+  ],
+  negative: [
+    { value: 'fed-up', label: 'Fed Up' },
+    { value: 'gloomy', label: 'Gloomy' },
+    { value: 'sad', label: 'Sad' },
+    { value: 'downhearted', label: 'Downhearted' },
+    { value: 'blue', label: 'Blue' },
+    { value: 'lonely', label: 'Lonely' },
+    { value: 'disappointed', label: 'Disappointed' },
+    { value: 'tired', label: 'Tired' },
+    { value: 'drowsy', label: 'Drowsy' },
+    { value: 'sleepy', label: 'Sleepy' },
+    { value: 'jittery', label: 'Jittery' },
+    { value: 'nervous', label: 'Nervous' },
+    { value: 'anxious', label: 'Anxious' },
+    { value: 'worried', label: 'Worried' },
+    { value: 'fearful', label: 'Fearful' },
+    { value: 'panicked', label: 'Panicked' },
+    { value: 'irritable', label: 'Irritable' },
+    { value: 'grouchy', label: 'Grouchy' },
+    { value: 'angry', label: 'Angry' },
+    { value: 'hostile', label: 'Hostile' },
+    { value: 'resentful', label: 'Resentful' },
+    { value: 'ashamed', label: 'Ashamed' },
+    { value: 'guilty', label: 'Guilty' },
+    { value: 'embarrassed', label: 'Embarrassed' },
+    { value: 'distressed', label: 'Distressed' },
+    { value: 'upset', label: 'Upset' },
+  ],
+};
 
 const NewJournalEntry = ({ onClose }: { onClose: () => void }) => {
   const [activeTab, setActiveTab] = useState('check-in');
@@ -51,10 +110,10 @@ const NewJournalEntry = ({ onClose }: { onClose: () => void }) => {
 
   const form = useForm<JournalEntryForm>({
     defaultValues: {
-      morningMood: '3',
+      morningMood: 'content',
       dailyGoal: '',
       todos: todos,
-      eveningMood: '3',
+      eveningMood: 'content',
       reflection: '',
       medications: {
         morning: false,
@@ -116,33 +175,47 @@ const NewJournalEntry = ({ onClose }: { onClose: () => void }) => {
               <TabsContent value="check-in" className="space-y-4">
                 <div className="space-y-2">
                   <h3 className="font-medium">How are you feeling this morning?</h3>
-                  <RadioGroup 
-                    defaultValue="3" 
-                    className="flex space-x-2"
-                    onValueChange={(value) => form.setValue('morningMood', value)}
-                  >
-                    {moodOptions.map((option) => (
-                      <div key={option.value} className="flex flex-col items-center gap-1">
-                        <RadioGroupItem 
-                          value={option.value} 
-                          id={`morning-mood-${option.value}`} 
-                          className="peer sr-only" 
-                        />
-                        <Label 
-                          htmlFor={`morning-mood-${option.value}`}
-                          className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary cursor-pointer"
+                  
+                  <FormField
+                    control={form.control}
+                    name="morningMood"
+                    render={({ field }) => (
+                      <FormItem>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
                         >
-                          <span className="text-xl mb-1">
-                            {option.value === '1' ? '😢' : 
-                             option.value === '2' ? '😕' : 
-                             option.value === '3' ? '😐' : 
-                             option.value === '4' ? '🙂' : '😄'}
-                          </span>
-                          <span className="text-xs">{option.label}</span>
-                        </Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
+                          <FormControl>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select your mood" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="max-h-[300px]">
+                            <div className="p-2 font-semibold text-primary">Positive</div>
+                            {moodOptions.positive.map((option) => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                            
+                            <div className="p-2 font-semibold text-muted-foreground">Neutral</div>
+                            {moodOptions.neutral.map((option) => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                            
+                            <div className="p-2 font-semibold text-destructive">Negative</div>
+                            {moodOptions.negative.map((option) => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormItem>
+                    )}
+                  />
                 </div>
 
                 <div className="space-y-2">
@@ -257,33 +330,47 @@ const NewJournalEntry = ({ onClose }: { onClose: () => void }) => {
               <TabsContent value="check-out" className="space-y-4">
                 <div className="space-y-2">
                   <h3 className="font-medium">How are you feeling this evening?</h3>
-                  <RadioGroup 
-                    defaultValue="3" 
-                    className="flex space-x-2"
-                    onValueChange={(value) => form.setValue('eveningMood', value)}
-                  >
-                    {moodOptions.map((option) => (
-                      <div key={option.value} className="flex flex-col items-center gap-1">
-                        <RadioGroupItem 
-                          value={option.value} 
-                          id={`evening-mood-${option.value}`} 
-                          className="peer sr-only" 
-                        />
-                        <Label 
-                          htmlFor={`evening-mood-${option.value}`}
-                          className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary cursor-pointer"
+                  
+                  <FormField
+                    control={form.control}
+                    name="eveningMood"
+                    render={({ field }) => (
+                      <FormItem>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
                         >
-                          <span className="text-xl mb-1">
-                            {option.value === '1' ? '😢' : 
-                             option.value === '2' ? '😕' : 
-                             option.value === '3' ? '😐' : 
-                             option.value === '4' ? '🙂' : '😄'}
-                          </span>
-                          <span className="text-xs">{option.label}</span>
-                        </Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
+                          <FormControl>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select your mood" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="max-h-[300px]">
+                            <div className="p-2 font-semibold text-primary">Positive</div>
+                            {moodOptions.positive.map((option) => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                            
+                            <div className="p-2 font-semibold text-muted-foreground">Neutral</div>
+                            {moodOptions.neutral.map((option) => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                            
+                            <div className="p-2 font-semibold text-destructive">Negative</div>
+                            {moodOptions.negative.map((option) => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormItem>
+                    )}
+                  />
                 </div>
 
                 <div className="space-y-2">

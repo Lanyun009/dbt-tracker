@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
-import { ArrowRight, Brain, Problem, Link, Check } from 'lucide-react';
+import { ArrowRight, Brain, Link, Check } from 'lucide-react';
 
 type ChainStep = {
   id: string;
@@ -255,6 +256,9 @@ const ChainAnalysis = ({ triggerId, triggerName, onClose }: ChainAnalysisProps) 
           </Form>
         </div>
       </CardContent>
+      <CardFooter>
+        {/* Additional footer content */}
+      </CardFooter>
     </Card>
   );
 };
