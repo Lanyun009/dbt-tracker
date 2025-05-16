@@ -1,12 +1,9 @@
 
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
-import { HeartPulse, Thermometer, Activity } from 'lucide-react';
-import BiometricsChart from '@/components/biometrics/BiometricsChart';
 import RestingHeartRate from '@/components/biometrics/RestingHeartRate';
 import BaseTemperature from '@/components/biometrics/BaseTemperature';
 import HRVTrends from '@/components/biometrics/HRVTrends';
-import StressRecoveryChart from '@/components/biometrics/StressRecoveryChart';
 
 const Biometrics = () => {
   return (
@@ -19,10 +16,6 @@ const Biometrics = () => {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div className="md:col-span-2 lg:col-span-2">
-          <StressRecoveryChart />
-        </div>
-        
         <div className="md:col-span-1 lg:col-span-1">
           <RestingHeartRate />
         </div>
@@ -31,7 +24,7 @@ const Biometrics = () => {
           <BaseTemperature />
         </div>
 
-        <div className="md:col-span-1 lg:col-span-2">
+        <div className="md:col-span-2 lg:col-span-1">
           <HRVTrends />
         </div>
       </div>

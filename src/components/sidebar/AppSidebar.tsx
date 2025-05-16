@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
@@ -7,7 +6,8 @@ import {
   Brain, 
   User, 
   FileText,
-  Sunset // Using Sunset instead of Meditation
+  Sunset, // Using Sunset instead of Meditation
+  Activity // Adding Activity icon for Biometrics
 } from 'lucide-react';
 import {
   Sidebar,
@@ -47,6 +47,11 @@ const menuItems = [
     title: "Therapy",
     path: "/therapy",
     icon: User,
+  },
+  {
+    title: "Biometrics",
+    path: "/biometrics",
+    icon: Activity,
   },
   {
     title: "Calendar",
