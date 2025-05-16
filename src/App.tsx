@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import Journal from "./pages/Journal";
 import Triggers from "./pages/Triggers";
 import Mindfulness from "./pages/Mindfulness";
+import Therapy from "./pages/Therapy";
+import Biometrics from "./pages/Biometrics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,9 +25,9 @@ const App = () => (
           <Route path="/journal" element={<Journal />} />
           <Route path="/triggers" element={<Triggers />} />
           <Route path="/mindfulness" element={<Mindfulness />} />
+          <Route path="/therapy" element={<Therapy />} />
+          <Route path="/biometrics" element={<Biometrics />} />
           {/* We'll implement these pages later */}
-          <Route path="/therapy" element={<Index />} />
-          <Route path="/biometrics" element={<Index />} />
           <Route path="/calendar" element={<Index />} />
           {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />

@@ -13,15 +13,16 @@ import {
   ZAxis
 } from 'recharts';
 import { Button } from '@/components/ui/button';
+import { Activity } from 'lucide-react';
 
 const weeklyData = [
-  { day: 'Mon', motivation: 40, stress: 75, size: 100 },
-  { day: 'Tue', motivation: 65, stress: 60, size: 100 },
-  { day: 'Wed', motivation: 55, stress: 40, size: 100 },
-  { day: 'Thu', motivation: 70, stress: 30, size: 100 },
-  { day: 'Fri', motivation: 80, stress: 45, size: 100 },
-  { day: 'Sat', motivation: 75, stress: 35, size: 100 },
-  { day: 'Sun', motivation: 60, stress: 50, size: 100 },
+  { day: 'Mon', recovery: 30, stress: 75, size: 100 },
+  { day: 'Tue', recovery: 45, stress: 60, size: 100 },
+  { day: 'Wed', recovery: 65, stress: 40, size: 100 },
+  { day: 'Thu', recovery: 70, stress: 30, size: 100 },
+  { day: 'Fri', recovery: 60, stress: 55, size: 100 },
+  { day: 'Sat', recovery: 75, stress: 35, size: 100 },
+  { day: 'Sun', recovery: 50, stress: 50, size: 100 },
 ];
 
 // Connect the data points in sequential order
@@ -35,7 +36,7 @@ const CustomTooltip = ({ active, payload }: any) => {
     return (
       <div className="bg-background border border-border p-2 rounded-md shadow-md text-xs">
         <p className="font-medium">{payload[0].payload.day}</p>
-        <p>Motivation: {payload[0].payload.motivation}</p>
+        <p>Recovery: {payload[0].payload.recovery}</p>
         <p>Stress: {payload[0].payload.stress}</p>
       </div>
     );
@@ -44,14 +45,17 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-const MoodChart = () => {
+const StressRecoveryChart = () => {
   const [viewMode, setViewMode] = useState<'trend' | 'map'>('trend');
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
-          <span>Weekly Mood</span>
+          <span className="flex items-center gap-2">
+            <Activity size={18} className="text-primary" />
+            Stress/Recovery Balance
+          </span>
           <div className="flex space-x-2">
             <Button 
               size="sm" 
@@ -89,12 +93,12 @@ const MoodChart = () => {
                   tick={{ fontSize: 12 }} 
                 />
                 <YAxis 
-                  dataKey="motivation" 
-                  name="Motivation" 
+                  dataKey="recovery" 
+                  name="Recovery" 
                   tick={{ fontSize: 12 }} 
                   domain={[0, 100]} 
                   label={{ 
-                    value: 'Motivation', 
+                    value: 'Recovery', 
                     angle: -90, 
                     position: 'left',
                     style: { textAnchor: 'middle', fontSize: '12px', fill: 'hsl(var(--muted-foreground))' }
@@ -102,7 +106,7 @@ const MoodChart = () => {
                 />
                 <Tooltip content={<CustomTooltip />} />
                 <Scatter
-                  name="Mood"
+                  name="Recovery"
                   data={weeklyData}
                   fill="hsl(var(--primary))"
                   line={{ stroke: 'hsl(var(--primary))', strokeWidth: 2 }}
@@ -134,11 +138,11 @@ const MoodChart = () => {
                 />
                 <YAxis 
                   type="number" 
-                  dataKey="motivation" 
-                  name="Motivation" 
+                  dataKey="recovery" 
+                  name="Recovery" 
                   domain={[0, 100]} 
                   label={{ 
-                    value: 'Motivation', 
+                    value: 'Recovery', 
                     angle: -90, 
                     position: 'left',
                     style: { textAnchor: 'middle', fontSize: '12px', fill: 'hsl(var(--muted-foreground))' }
@@ -153,7 +157,7 @@ const MoodChart = () => {
                 <Scatter
                   data={lineData}
                   line={{
-                    type: 'monotone', // Fixed: changed from 'joint' to 'monotone'
+                    type: 'monotone',
                     stroke: 'rgba(255, 255, 255, 0.5)',
                     strokeWidth: 1,
                   }}
@@ -162,7 +166,7 @@ const MoodChart = () => {
                 
                 {/* Show dots */}
                 <Scatter
-                  name="Mood"
+                  name="Balance"
                   data={weeklyData}
                   fill="hsl(var(--primary))"
                 />
@@ -191,8 +195,8 @@ const MoodChart = () => {
           <div className="mt-2 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
             <div className="text-left">Low stress</div>
             <div className="text-right">High stress</div>
-            <div className="text-left">High motivation</div>
-            <div className="text-right">Low motivation</div>
+            <div className="text-left">High recovery</div>
+            <div className="text-right">Low recovery</div>
           </div>
         )}
       </CardContent>
@@ -200,4 +204,4 @@ const MoodChart = () => {
   );
 };
 
-export default MoodChart;
+export default StressRecoveryChart;
