@@ -1,62 +1,200 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
-  AreaChart, 
-  Area, 
+  ScatterChart, 
+  Scatter, 
   XAxis, 
   YAxis, 
   CartesianGrid, 
   Tooltip, 
-  ResponsiveContainer 
+  ResponsiveContainer,
+  ReferenceLine,
+  ZAxis
 } from 'recharts';
+import { Button } from '@/components/ui/button';
 
-const data = [
-  { name: 'Mon', mood: 4 },
-  { name: 'Tue', mood: 5 },
-  { name: 'Wed', mood: 3 },
-  { name: 'Thu', mood: 6 },
-  { name: 'Fri', mood: 7 },
-  { name: 'Sat', mood: 5 },
-  { name: 'Sun', mood: 6 },
+const weeklyData = [
+  { day: 'Mon', motivation: 40, stress: 75, size: 100 },
+  { day: 'Tue', motivation: 65, stress: 60, size: 100 },
+  { day: 'Wed', motivation: 55, stress: 40, size: 100 },
+  { day: 'Thu', motivation: 70, stress: 30, size: 100 },
+  { day: 'Fri', motivation: 80, stress: 45, size: 100 },
+  { day: 'Sat', motivation: 75, stress: 35, size: 100 },
+  { day: 'Sun', motivation: 60, stress: 50, size: 100 },
 ];
 
+// Connect the data points in sequential order
+const lineData = [...weeklyData].sort((a, b) => {
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  return days.indexOf(a.day) - days.indexOf(b.day);
+});
+
+const CustomTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-background border border-border p-2 rounded-md shadow-md text-xs">
+        <p className="font-medium">{payload[0].payload.day}</p>
+        <p>Motivation: {payload[0].payload.motivation}</p>
+        <p>Stress: {payload[0].payload.stress}</p>
+      </div>
+    );
+  }
+
+  return null;
+};
+
 const MoodChart = () => {
+  const [viewMode, setViewMode] = useState<'trend' | 'map'>('trend');
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Weekly Mood</CardTitle>
+        <CardTitle className="flex justify-between items-center">
+          <span>Weekly Mood</span>
+          <div className="flex space-x-2">
+            <Button 
+              size="sm" 
+              variant={viewMode === 'trend' ? 'default' : 'outline'}
+              onClick={() => setViewMode('trend')}
+            >
+              Trend
+            </Button>
+            <Button 
+              size="sm" 
+              variant={viewMode === 'map' ? 'default' : 'outline'}
+              onClick={() => setViewMode('map')}
+            >
+              Map
+            </Button>
+          </div>
+        </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[200px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart
-              data={data}
-              margin={{
-                top: 10,
-                right: 10,
-                left: -20,
-                bottom: 0,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-              <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-              <YAxis domain={[0, 10]} tick={{ fontSize: 12 }} />
-              <Tooltip />
-              <Area
-                type="monotone"
-                dataKey="mood"
-                stroke="hsl(var(--primary))"
-                fill="hsl(var(--primary) / 0.3)"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+        <div className="h-[300px]">
+          {viewMode === 'trend' ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <ScatterChart
+                margin={{
+                  top: 20,
+                  right: 20,
+                  bottom: 30,
+                  left: 20,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+                <XAxis 
+                  dataKey="day" 
+                  name="Day" 
+                  tick={{ fontSize: 12 }} 
+                />
+                <YAxis 
+                  dataKey="motivation" 
+                  name="Motivation" 
+                  tick={{ fontSize: 12 }} 
+                  domain={[0, 100]} 
+                  label={{ 
+                    value: 'Motivation', 
+                    angle: -90, 
+                    position: 'left',
+                    style: { textAnchor: 'middle', fontSize: '12px', fill: 'hsl(var(--muted-foreground))' }
+                  }} 
+                />
+                <Tooltip content={<CustomTooltip />} />
+                <Scatter
+                  name="Mood"
+                  data={weeklyData}
+                  fill="hsl(var(--primary))"
+                  line={{ stroke: 'hsl(var(--primary))', strokeWidth: 2 }}
+                  shape="circle"
+                />
+              </ScatterChart>
+            </ResponsiveContainer>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <ScatterChart
+                margin={{
+                  top: 20,
+                  right: 20,
+                  bottom: 30,
+                  left: 20,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+                <XAxis 
+                  type="number" 
+                  dataKey="stress" 
+                  name="Stress" 
+                  domain={[0, 100]} 
+                  label={{ 
+                    value: 'Stress', 
+                    position: 'bottom',
+                    style: { textAnchor: 'middle', fontSize: '12px', fill: 'hsl(var(--muted-foreground))' }
+                  }} 
+                />
+                <YAxis 
+                  type="number" 
+                  dataKey="motivation" 
+                  name="Motivation" 
+                  domain={[0, 100]} 
+                  label={{ 
+                    value: 'Motivation', 
+                    angle: -90, 
+                    position: 'left',
+                    style: { textAnchor: 'middle', fontSize: '12px', fill: 'hsl(var(--muted-foreground))' }
+                  }} 
+                />
+                <ZAxis dataKey="size" range={[50, 500]} />
+                <Tooltip content={<CustomTooltip />} />
+                <ReferenceLine x={50} stroke="hsl(var(--muted-foreground))" strokeDasharray="3 3" />
+                <ReferenceLine y={50} stroke="hsl(var(--muted-foreground))" strokeDasharray="3 3" />
+                
+                {/* Connect dots with lines */}
+                <Scatter
+                  data={lineData}
+                  line={{
+                    type: 'joint',
+                    stroke: 'rgba(255, 255, 255, 0.5)',
+                    strokeWidth: 1,
+                  }}
+                  shape={() => null}
+                />
+                
+                {/* Show dots */}
+                <Scatter
+                  name="Mood"
+                  data={weeklyData}
+                  fill="hsl(var(--primary))"
+                />
+                
+                {/* Show today's point highlighted */}
+                <Scatter
+                  data={[weeklyData[weeklyData.length - 1]]}
+                  fill="#ffffff"
+                  shape={(props) => (
+                    <circle
+                      cx={props.cx}
+                      cy={props.cy}
+                      r={8}
+                      fill="hsl(var(--primary))"
+                      stroke="#ffffff"
+                      strokeWidth={2}
+                    />
+                  )}
+                />
+              </ScatterChart>
+            </ResponsiveContainer>
+          )}
         </div>
-        <div className="mt-2 flex justify-between text-xs text-muted-foreground">
-          <span>Lower</span>
-          <span>Mood Rating</span>
-          <span>Higher</span>
-        </div>
+        
+        {viewMode === 'map' && (
+          <div className="mt-2 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+            <div className="text-left">Low stress</div>
+            <div className="text-right">High stress</div>
+            <div className="text-left">High motivation</div>
+            <div className="text-right">Low motivation</div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
