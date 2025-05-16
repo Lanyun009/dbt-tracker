@@ -3,7 +3,6 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   Calendar, 
-  Heart, 
   Home, 
   Brain, 
   User, 
@@ -48,11 +47,6 @@ const menuItems = [
     title: "Therapy",
     path: "/therapy",
     icon: User,
-  },
-  {
-    title: "Biometrics",
-    path: "/biometrics",
-    icon: Heart,
   },
   {
     title: "Calendar",

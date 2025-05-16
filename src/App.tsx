@@ -3,13 +3,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import Journal from "./pages/Journal";
 import Triggers from "./pages/Triggers";
 import Mindfulness from "./pages/Mindfulness";
 import Therapy from "./pages/Therapy";
-import Biometrics from "./pages/Biometrics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,7 +25,7 @@ const App = () => (
           <Route path="/triggers" element={<Triggers />} />
           <Route path="/mindfulness" element={<Mindfulness />} />
           <Route path="/therapy" element={<Therapy />} />
-          <Route path="/biometrics" element={<Biometrics />} />
+          <Route path="/biometrics" element={<Navigate to="/" replace />} />
           {/* We'll implement these pages later */}
           <Route path="/calendar" element={<Index />} />
           {/* Catch-all route for 404 */}
