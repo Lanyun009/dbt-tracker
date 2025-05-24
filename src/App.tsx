@@ -3,7 +3,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/hooks/useAuth";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import Journal from "./pages/Journal";
 import Triggers from "./pages/Triggers";
@@ -11,6 +13,7 @@ import Mindfulness from "./pages/Mindfulness";
 import Therapy from "./pages/Therapy";
 import Biometrics from "./pages/Biometrics";
 import Calendar from "./pages/Calendar";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,19 +23,49 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/journal" element={<Journal />} />
-          <Route path="/triggers" element={<Triggers />} />
-          <Route path="/mindfulness" element={<Mindfulness />} />
-          <Route path="/therapy" element={<Therapy />} />
-          <Route path="/biometrics" element={<Biometrics />} />
-          <Route path="/calendar" element={<Calendar />} />
-          {/* Catch-all route for 404 */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/" element={
+              <ProtectedRoute>
+                <Index />
+              </ProtectedRoute>
+            } />
+            <Route path="/journal" element={
+              <ProtectedRoute>
+                <Journal />
+              </ProtectedRoute>
+            } />
+            <Route path="/triggers" element={
+              <ProtectedRoute>
+                <Triggers />
+              </ProtectedRoute>
+            } />
+            <Route path="/mindfulness" element={
+              <ProtectedRoute>
+                <Mindfulness />
+              </ProtectedRoute>
+            } />
+            <Route path="/therapy" element={
+              <ProtectedRoute>
+                <Therapy />
+              </ProtectedRoute>
+            } />
+            <Route path="/biometrics" element={
+              <ProtectedRoute>
+                <Biometrics />
+              </ProtectedRoute>
+            } />
+            <Route path="/calendar" element={
+              <ProtectedRoute>
+                <Calendar />
+              </ProtectedRoute>
+            } />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

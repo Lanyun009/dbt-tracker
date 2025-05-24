@@ -6,8 +6,8 @@ import {
   Brain, 
   User, 
   FileText,
-  Sunset, // Using Sunset instead of Meditation
-  Activity // Adding Activity icon for Biometrics
+  Sunset,
+  Activity
 } from 'lucide-react';
 import {
   Sidebar,
@@ -21,6 +21,7 @@ import {
   SidebarHeader,
   SidebarFooter,
 } from "@/components/ui/sidebar";
+import UserMenu from './UserMenu';
 
 const menuItems = [
   {
@@ -41,7 +42,7 @@ const menuItems = [
   {
     title: "Mindfulness",
     path: "/mindfulness",
-    icon: Sunset, // Using Sunset instead of Meditation
+    icon: Sunset,
   },
   {
     title: "Therapy",
@@ -100,6 +101,7 @@ export function AppSidebar() {
       </SidebarContent>
       
       <SidebarFooter>
+        <UserMenu />
         <div className="px-4 py-3 text-xs text-muted-foreground text-center">
           Serenity v1.0 - Your path to recovery
         </div>
