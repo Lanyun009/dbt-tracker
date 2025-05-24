@@ -14,7 +14,7 @@ interface TriggersListProps {
     notes: string;
   }>;
   onAddTrigger: () => void;
-  onViewChainAnalysis: (triggerId: string) => void;
+  onViewChainAnalysis: (triggerId: number) => void;
 }
 
 const TriggersList = ({ triggers, onAddTrigger, onViewChainAnalysis }: TriggersListProps) => {
@@ -37,7 +37,7 @@ const TriggersList = ({ triggers, onAddTrigger, onViewChainAnalysis }: TriggersL
             <TriggerCard 
               key={trigger.id} 
               trigger={trigger} 
-              onViewChainAnalysis={(id) => onViewChainAnalysis(id.toString())}
+              onViewChainAnalysis={onViewChainAnalysis}
             />
           ))
         )}

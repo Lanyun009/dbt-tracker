@@ -26,13 +26,23 @@ const unknownTriggers = [
 
 const Triggers = () => {
   const { knownTriggers, potentialTriggers, isLoading, refetch } = useTriggers();
-  const [selectedTriggerId, setSelectedTriggerId] = useState<string | null>(null);
+  const [selectedTriggerId, setSelectedTriggerId] = useState<number | null>(null);
   const [showChainAnalysis, setShowChainAnalysis] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
   
-  const selectedTrigger = knownTriggers.find(trigger => trigger.id === selectedTriggerId);
+  // Transform database triggers to match component interface
+  const transformedKnownTriggers = knownTriggers.map(trigger => ({
+    id: parseInt(trigger.id.slice(-6), 16), // Convert UUID to number for backward compatibility
+    name: trigger.name,
+    frequency: trigger.frequency.charAt(0).toUpperCase() + trigger.frequency.slice(1),
+    lastOccurred: trigger.last_occurred ? new Date(trigger.last_occurred).toLocaleDateString() : 'Never',
+    recovery: trigger.recovery,
+    notes: trigger.notes || ''
+  }));
   
-  const handleViewChainAnalysis = (triggerId: string) => {
+  const selectedTrigger = transformedKnownTriggers.find(trigger => trigger.id === selectedTriggerId);
+  
+  const handleViewChainAnalysis = (triggerId: number) => {
     setSelectedTriggerId(triggerId);
     setShowChainAnalysis(true);
   };
@@ -52,16 +62,6 @@ const Triggers = () => {
   const handleTriggerAdded = () => {
     refetch();
   };
-
-  // Transform database triggers to match component interface
-  const transformedKnownTriggers = knownTriggers.map(trigger => ({
-    id: parseInt(trigger.id.slice(-6), 16), // Convert UUID to number for backward compatibility
-    name: trigger.name,
-    frequency: trigger.frequency.charAt(0).toUpperCase() + trigger.frequency.slice(1),
-    lastOccurred: trigger.last_occurred ? new Date(trigger.last_occurred).toLocaleDateString() : 'Never',
-    recovery: trigger.recovery,
-    notes: trigger.notes || ''
-  }));
 
   if (isLoading) {
     return (
