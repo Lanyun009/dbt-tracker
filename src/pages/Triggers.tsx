@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -8,6 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ChainAnalysis from '@/components/triggers/ChainAnalysis';
+import AddTriggerForm from '@/components/triggers/AddTriggerForm';
 
 const knownTriggers = [
   {
@@ -54,6 +54,7 @@ const unknownTriggers = [
 const Triggers = () => {
   const [selectedTriggerId, setSelectedTriggerId] = useState<number | null>(null);
   const [showChainAnalysis, setShowChainAnalysis] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
   
   const selectedTrigger = knownTriggers.find(trigger => trigger.id === selectedTriggerId);
   
@@ -66,9 +67,21 @@ const Triggers = () => {
     setShowChainAnalysis(false);
   };
 
+  const handleAddTrigger = () => {
+    setShowAddForm(true);
+  };
+
+  const handleBackFromForm = () => {
+    setShowAddForm(false);
+  };
+
   return (
     <MainLayout>
-      {showChainAnalysis && selectedTrigger ? (
+      {showAddForm ? (
+        <div className="animate-fade-in">
+          <AddTriggerForm onBack={handleBackFromForm} />
+        </div>
+      ) : showChainAnalysis && selectedTrigger ? (
         <div className="animate-fade-in">
           <div className="mb-6 flex justify-between items-center">
             <h1 className="text-3xl font-bold">Chain Analysis</h1>
@@ -100,7 +113,7 @@ const Triggers = () => {
             <TabsContent value="known" className="mt-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-semibold">Your Known Triggers</h2>
-                <Button>
+                <Button onClick={handleAddTrigger}>
                   <Plus className="mr-2 h-4 w-4" /> Add Trigger
                 </Button>
               </div>
