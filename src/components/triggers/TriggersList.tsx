@@ -14,7 +14,7 @@ interface TriggersListProps {
     notes: string;
   }>;
   onAddTrigger: () => void;
-  onViewChainAnalysis: (triggerId: number) => void;
+  onViewChainAnalysis: (triggerId: string) => void;
 }
 
 const TriggersList = ({ triggers, onAddTrigger, onViewChainAnalysis }: TriggersListProps) => {
@@ -28,13 +28,19 @@ const TriggersList = ({ triggers, onAddTrigger, onViewChainAnalysis }: TriggersL
       </div>
       
       <div className="space-y-6">
-        {triggers.map((trigger) => (
-          <TriggerCard 
-            key={trigger.id} 
-            trigger={trigger} 
-            onViewChainAnalysis={onViewChainAnalysis}
-          />
-        ))}
+        {triggers.length === 0 ? (
+          <div className="text-center py-8 text-muted-foreground">
+            <p>No triggers found. Click "Add Trigger" to get started.</p>
+          </div>
+        ) : (
+          triggers.map((trigger) => (
+            <TriggerCard 
+              key={trigger.id} 
+              trigger={trigger} 
+              onViewChainAnalysis={(id) => onViewChainAnalysis(id.toString())}
+            />
+          ))
+        )}
       </div>
     </>
   );

@@ -7,33 +7,7 @@ import ChainAnalysis from '@/components/triggers/ChainAnalysis';
 import AddTriggerForm from '@/components/triggers/AddTriggerForm';
 import TriggersList from '@/components/triggers/TriggersList';
 import PotentialTriggersList from '@/components/triggers/PotentialTriggersList';
-
-const knownTriggers = [
-  {
-    id: 1,
-    name: 'Work Deadlines',
-    frequency: 'High',
-    lastOccurred: '2 days ago',
-    recovery: 75,
-    notes: 'Associated with increased heart rate and shallow breathing.'
-  },
-  {
-    id: 2,
-    name: 'Social Events',
-    frequency: 'Medium',
-    lastOccurred: '1 week ago',
-    recovery: 45,
-    notes: 'Usually experiences anticipatory anxiety 2-3 days before event.'
-  },
-  {
-    id: 3,
-    name: 'Family Conflicts',
-    frequency: 'Low',
-    lastOccurred: '3 weeks ago',
-    recovery: 90,
-    notes: 'DBT techniques have been effective in managing emotional responses.'
-  }
-];
+import { useTriggers } from '@/hooks/useTriggers';
 
 const unknownTriggers = [
   {
@@ -51,13 +25,14 @@ const unknownTriggers = [
 ];
 
 const Triggers = () => {
-  const [selectedTriggerId, setSelectedTriggerId] = useState<number | null>(null);
+  const { knownTriggers, potentialTriggers, isLoading, refetch } = useTriggers();
+  const [selectedTriggerId, setSelectedTriggerId] = useState<string | null>(null);
   const [showChainAnalysis, setShowChainAnalysis] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
   
   const selectedTrigger = knownTriggers.find(trigger => trigger.id === selectedTriggerId);
   
-  const handleViewChainAnalysis = (triggerId: number) => {
+  const handleViewChainAnalysis = (triggerId: string) => {
     setSelectedTriggerId(triggerId);
     setShowChainAnalysis(true);
   };
@@ -74,11 +49,38 @@ const Triggers = () => {
     setShowAddForm(false);
   };
 
+  const handleTriggerAdded = () => {
+    refetch();
+  };
+
+  // Transform database triggers to match component interface
+  const transformedKnownTriggers = knownTriggers.map(trigger => ({
+    id: parseInt(trigger.id.slice(-6), 16), // Convert UUID to number for backward compatibility
+    name: trigger.name,
+    frequency: trigger.frequency.charAt(0).toUpperCase() + trigger.frequency.slice(1),
+    lastOccurred: trigger.last_occurred ? new Date(trigger.last_occurred).toLocaleDateString() : 'Never',
+    recovery: trigger.recovery,
+    notes: trigger.notes || ''
+  }));
+
+  if (isLoading) {
+    return (
+      <MainLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-lg">Loading triggers...</div>
+        </div>
+      </MainLayout>
+    );
+  }
+
   return (
     <MainLayout>
       {showAddForm ? (
         <div className="animate-fade-in">
-          <AddTriggerForm onBack={handleBackFromForm} />
+          <AddTriggerForm 
+            onBack={handleBackFromForm} 
+            onTriggerAdded={handleTriggerAdded}
+          />
         </div>
       ) : showChainAnalysis && selectedTrigger ? (
         <div className="animate-fade-in">
@@ -111,7 +113,7 @@ const Triggers = () => {
             
             <TabsContent value="known" className="mt-6">
               <TriggersList 
-                triggers={knownTriggers}
+                triggers={transformedKnownTriggers}
                 onAddTrigger={handleAddTrigger}
                 onViewChainAnalysis={handleViewChainAnalysis}
               />
