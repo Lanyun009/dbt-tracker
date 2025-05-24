@@ -1,13 +1,12 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Brain, Plus, ArrowRight } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
-import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ChainAnalysis from '@/components/triggers/ChainAnalysis';
 import AddTriggerForm from '@/components/triggers/AddTriggerForm';
+import TriggersList from '@/components/triggers/TriggersList';
+import PotentialTriggersList from '@/components/triggers/PotentialTriggersList';
 
 const knownTriggers = [
   {
@@ -111,97 +110,15 @@ const Triggers = () => {
             </TabsList>
             
             <TabsContent value="known" className="mt-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-semibold">Your Known Triggers</h2>
-                <Button onClick={handleAddTrigger}>
-                  <Plus className="mr-2 h-4 w-4" /> Add Trigger
-                </Button>
-              </div>
-              
-              <div className="space-y-6">
-                {knownTriggers.map((trigger) => (
-                  <Card key={trigger.id} className="card-hover">
-                    <CardHeader>
-                      <CardTitle className="flex justify-between items-center">
-                        <div className="flex items-center gap-2">
-                          <Brain size={18} className="text-primary" />
-                          {trigger.name}
-                        </div>
-                        <span className={`text-sm px-3 py-1 rounded-full ${
-                          trigger.frequency === 'High' ? 'bg-destructive/20 text-destructive' : 
-                          trigger.frequency === 'Medium' ? 'bg-amber-500/20 text-amber-700' : 
-                          'bg-emerald-500/20 text-emerald-700'
-                        }`}>
-                          {trigger.frequency} Frequency
-                        </span>
-                      </CardTitle>
-                      <CardDescription>Last occurred: {trigger.lastOccurred}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div>
-                          <div className="flex justify-between mb-1 text-sm">
-                            <span>Recovery Progress</span>
-                            <span>{trigger.recovery}%</span>
-                          </div>
-                          <Progress value={trigger.recovery} />
-                        </div>
-                        
-                        <div>
-                          <h3 className="text-sm font-medium text-muted-foreground mb-1">Notes</h3>
-                          <p className="text-sm">{trigger.notes}</p>
-                        </div>
-                        
-                        <div className="pt-2 flex justify-end">
-                          <Button 
-                            variant="secondary" 
-                            size="sm"
-                            onClick={() => handleViewChainAnalysis(trigger.id)}
-                          >
-                            View Chain Analysis <ArrowRight className="ml-2 h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              <TriggersList 
+                triggers={knownTriggers}
+                onAddTrigger={handleAddTrigger}
+                onViewChainAnalysis={handleViewChainAnalysis}
+              />
             </TabsContent>
             
             <TabsContent value="unknown" className="mt-6">
-              <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">Potential Trigger Patterns</h2>
-                <p className="text-muted-foreground">
-                  Based on your journal entries and biometric data, these patterns may indicate unknown triggers.
-                </p>
-              </div>
-              
-              <div className="space-y-6">
-                {unknownTriggers.map((item) => (
-                  <Card key={item.id} className="card-hover">
-                    <CardHeader>
-                      <CardTitle className="flex justify-between items-center">
-                        <div className="flex items-center gap-2">
-                          {item.pattern}
-                        </div>
-                        <span className={`text-sm px-3 py-1 rounded-full ${
-                          item.confidence === 'High' ? 'bg-primary/20 text-primary' : 
-                          'bg-secondary/20 text-secondary'
-                        }`}>
-                          {item.confidence} Confidence
-                        </span>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="mb-4">{item.suggestion}</p>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm">Dismiss</Button>
-                        <Button size="sm">Add to Known Triggers</Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              <PotentialTriggersList triggers={unknownTriggers} />
             </TabsContent>
           </Tabs>
         </div>
